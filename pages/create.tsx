@@ -1,15 +1,24 @@
-import React, { useState } from 'react';
-import Layout from '../components/Layout';
-import Router from 'next/router';
+import React, { useState } from "react";
+import Layout from "../components/Layout";
+import Router from "next/router";
 
 const Draft: React.FC = () => {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+  const [title, setTitle] = useState("title");
+  const [content, setContent] = useState("check");
 
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    // TODO
-    // You will implement this next ...
+    try {
+      const body = { title, content };
+      await fetch("http://localhost:3000/api/post/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      await Router.push("/drafts");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -32,21 +41,21 @@ const Draft: React.FC = () => {
             value={content}
           />
           <input disabled={!content || !title} type="submit" value="Create" />
-          <a className="back" href="#" onClick={() => Router.push('/')}>
+          <a className="back" href="#" onClick={() => Router.push("/")}>
             or Cancel
           </a>
         </form>
       </div>
       <style jsx>{`
         .page {
-          background: var(--geist-background);
+          background: white;
           padding: 3rem;
           display: flex;
           justify-content: center;
           align-items: center;
         }
 
-        input[type='text'],
+        input[type="text"],
         textarea {
           width: 100%;
           padding: 0.5rem;
@@ -55,7 +64,7 @@ const Draft: React.FC = () => {
           border: 0.125rem solid rgba(0, 0, 0, 0.2);
         }
 
-        input[type='submit'] {
+        input[type="submit"] {
           background: #ececec;
           border: 0;
           padding: 1rem 2rem;
