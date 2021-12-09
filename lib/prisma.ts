@@ -10,6 +10,8 @@ declare global {
   }
 }
 
+// change
+
 if (process.env.NODE_ENV === 'production') {
   prisma = new PrismaClient();
 } else {
